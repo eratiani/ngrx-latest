@@ -1,0 +1,31 @@
+<h1>NGRX signal store todo app</h1>
+<mat-form-field class="todo-input">
+  <mat-label> enter a todo and press enter </mat-label>
+  <input matInput #input (keyup.enter)="onAddTodo(input.value)" />
+  <mat-icon matSuffix> edit</mat-icon>
+</mat-form-field>
+<mat-button-toggle-group #filter (change)="onFIlterTodos($event)">
+  <mat-button-toggle value="all">All</mat-button-toggle>
+  <mat-button-toggle value="pending">pending</mat-button-toggle>
+  <mat-button-toggle value="completed">completed</mat-button-toggle>
+</mat-button-toggle-group>
+<mat-selection-list class="todos-list">
+  @for (todo of store.filteredTodos(); track todo.id; let index =$index) {
+  <mat-list-option
+    [selected]="todo.completed"
+    (selectedChange)="onTodoToggle($event, todo.id)"
+  >
+    <div class="todo-item">
+      <mat-icon class="delete-todo" (click)="onDeleteTodo($event, todo.id)"
+        >delete</mat-icon
+      >
+      <span
+        [ngStyle]="{
+          'text-decoration': todo.completed ? 'line-through' : 'none'
+        }"
+        >{{ todo.title }}</span
+      >
+    </div>
+  </mat-list-option>
+  }
+</mat-selection-list>
